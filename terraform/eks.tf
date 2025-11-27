@@ -9,6 +9,16 @@ module "eks" {
   subnet_ids               = module.vpc.public_subnets
   cluster_endpoint_public_access = true
 
+  manage_aws_auth_configmap = true
+
+  aws_auth_users = [
+    {
+      userarn  = "arn:aws:iam::643067045558:user/CursoDesarrolloEnLaNube"
+      username = "admin"
+      groups   = ["system:masters"]
+    }
+  ]
+
   eks_managed_node_groups = {
     default = {
       instance_types = [var.node_instance_type]
