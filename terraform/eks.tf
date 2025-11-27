@@ -9,15 +9,14 @@ module "eks" {
   subnet_ids               = module.vpc.public_subnets
   cluster_endpoint_public_access = true
 
-  manage_aws_auth_configmap = true
+  authentication_mode = "API"
 
-  aws_auth_users = [
-    {
-      userarn  = "arn:aws:iam::643067045558:user/CursoDesarrolloEnLaNube"
-      username = "admin"
-      groups   = ["system:masters"]
+  access_entries = {
+    admin-user = {
+      kubernetes_groups = ["system:masters"]
+      principal_arn     = "arn:aws:iam::643067045558:user/CursoDesarrolloEnLaNube"
     }
-  ]
+  }
 
   eks_managed_node_groups = {
     default = {
